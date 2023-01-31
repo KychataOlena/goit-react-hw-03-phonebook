@@ -8,17 +8,17 @@ import { Wrapper, MainTitle } from './App.styled';
 export class App extends Component {
   state = {
     contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+      // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
   };
 
   formSubmitHandler = data => {
     console.log(data);
-     // console.log(nanoid());
+    // console.log(nanoid());
     const contact = {
       id: nanoid(),
       name: data.name,
@@ -53,6 +53,21 @@ export class App extends Component {
     );
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContact = JSON.parse(contacts);
+
+    if (parsedContact) {
+      this.setState({ contacts: parsedContact });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('App componentDidUpdate');
+    if (this.state.contacts !== prevState.contacts);
+    console.log('update');
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
   render() {
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
